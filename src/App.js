@@ -1,13 +1,14 @@
 import React from "react";
+import { Provider } from "./components/store/todoStore";
 import AddTodo from "./components/Todo/AddTodo";
 import TodoList from "./components/Todo/TodoList";
 
 const App = () => {
   return (
-    <div>
+    <Provider>
       <AddTodo />
       <TodoList />
-    </div>
+    </Provider>
   );
 };
 

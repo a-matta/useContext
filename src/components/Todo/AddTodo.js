@@ -1,19 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from "./AddTodo.module.css";
 import Button from "../UI/Button";
 
 const AddTodo = ({ addHandler }) => {
+  const [todo, setTodo] = useState({ task: " ", title: " " });
+
+  const changeHandler = (e) => {
+    const { name, value } = e.target.value;
+
+    setTodo((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+    console.log(todo);
+  };
   return (
     <form onSubmit={addHandler} className={classes.input}>
       <div>
-        <label>Title</label>
-        <input type="text" />
+        <label htmlFor="title">Title</label>
+        <input name="title" type="text" onChange={changeHandler} />
       </div>
       <div>
-        <label>Task</label>
-        <input type="text" />
+        <label htmlFor="task">Task</label>
+        <input name="task" type="text" onChange={changeHandler} />
       </div>
-      <Button>Add Task</Button>
+      <Button type="submit">Add Task</Button>
     </form>
   );
 };
