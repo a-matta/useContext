@@ -24,29 +24,71 @@ const initialState = {
 };
 export const NotesContext = React.createContext();
 const reducer = (state, action) => {
-  if (action.type === "ADD_NOTE") {
-    console.log("note added");
-  } else {
-    return state;
+  switch (action.type) {
+    case "ADD_NOTE":
+      return {
+        notes: [
+          ...state.notes,
+          {
+            id: new Date().valueOf(),
+            ...action.todo,
+            done: false,
+          },
+        ],
+      };
+    case "REMOVE_NOTE":
+      const updateArray = state.notes.filter((item) => item.id !== action.id);
+      return {
+        ...state,
+        notes: updateArray,
+      };
+
+    case "DONE_NOTE":
+      const doneToggle = state.notes.map((note) => {
+        return note.id === action.id
+          ? { ...note, done: !note.done }
+          : { ...note };
+      });
+      return {
+        ...state,
+        notes: doneToggle,
+      };
+    default:
+      return state;
   }
 };
+
 export const Provider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const addToItem = () => {
+  const addToItem = (todo) => {
     dispatch({
       type: "ADD_NOTE",
+      todo: todo,
+    });
+  };
+
+  const removeTodo = (id) => {
+    dispatch({
+      type: "REMOVE_NOTE",
+      id: id,
+    });
+  };
+  const doneTodo = (id) => {
+    dispatch({
+      type: "DONE_NOTE",
+      id: id,
     });
   };
 
   const value = {
     notes: state.notes,
     addToItem: addToItem,
+    removeTodo: removeTodo,
+    doneTodo: doneTodo,
   };
 
   return (
-    <NotesContext.Provider value={initialState}>
-      {children}
-    </NotesContext.Provider>
+    <NotesContext.Provider value={value}>{children}</NotesContext.Provider>
   );
 };

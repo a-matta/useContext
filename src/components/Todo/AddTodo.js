@@ -7,7 +7,7 @@ const AddTodo = () => {
   const [todo, setTodo] = useState({ task: " ", title: " " });
   const context = useContext(NotesContext);
   const changeHandler = (e) => {
-    const { name, value } = e.target.value;
+    const { name, value } = e.target;
 
     setTodo((prevState) => ({
       ...prevState,
@@ -18,7 +18,7 @@ const AddTodo = () => {
 
   const addHandler = (e) => {
     e.preventDefault();
-    context.addTodoItem();
+    context.addToItem(todo);
   };
   return (
     <form onSubmit={addHandler} className={classes.input}>
